@@ -73,6 +73,8 @@ dafeiyun_waf_max 5;  这里5是代表如果访问5次还解不开js验证 直接
   
 dafeiyun_waf_concurrency 500; 这个500是代表除了白名单以外的ip，所有访问者(包括通过了js验证的)每分钟请求超过500就直接iptables封ip
 
+把这5条规则添加到nginx.conf的http字段里就是全局开启cc防御，也可以单独针对某个网站开启cc防御 只需添加到单个网站的配置文件里
+
 # 通过ipset命令查询封禁ip名单
 
 查看ipset的屏蔽ip列表 ipset list dafeiyun
