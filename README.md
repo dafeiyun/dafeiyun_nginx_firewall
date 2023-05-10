@@ -32,8 +32,6 @@ echo "ipset create dafeiyun hash:ip timeout 3600 maxelem 1000000">>/etc/rc.d/rc.
 
 echo "iptables -I INPUT -m set --match-set dafeiyun src -j DROP">>/etc/rc.d/rc.local
 
-echo "insmod /home/dafeiyun_fw.ko">>/etc/rc.d/rc.local
-
 chmod +x /etc/rc.d/rc.local
 
 然后重启服务器检查上面这4条规则是否开机启动了
@@ -51,13 +49,16 @@ chmod +x /etc/rc.d/rc.local
 创建一个/etc/rc.local文件，把下面4句写到rc.local文件里
 
 ufw disable
+
 ipset create dafeiyun hash:ip timeout 3600 maxelem 1000000
+
 iptables -I INPUT -m set --match-set dafeiyun src -j DROP
+
 exit 0
 
 5，然后赋予权限chmod +x /etc/rc.local   接着启动rc-local服务systemctl enable --now rc-local
 
-然后重启服务器检查上面这4条规则是否开机启动了
+然后重启服务器检查上面这3条规则是否开机启动了
 
 
 
@@ -74,6 +75,8 @@ dafeiyun_waf_max 5;  这里5是代表如果访问5次还解不开js验证 直接
 dafeiyun_waf_concurrency 500; 这个500是代表除了白名单以外的ip，所有访问者(包括通过了js验证的)每分钟请求超过500就直接iptables封ip
 
 把这5条规则添加到nginx.conf的http字段里就是全局开启cc防御，也可以单独针对某个网站开启cc防御 只需添加到单个网站的配置文件里
+
+注意:重启nginx让规则生效不能直接重启nginx，需要先停止nginx 然后在启动nginx，因为直接重启nginx可能会失败 因为nginx写到内存中的数据来不及释放
 
 # 通过ipset命令查询封禁ip名单
 
