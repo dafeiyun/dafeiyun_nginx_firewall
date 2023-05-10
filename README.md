@@ -36,6 +36,8 @@ echo "insmod /home/dafeiyun_fw.ko">>/etc/rc.d/rc.local
 
 chmod +x /etc/rc.d/rc.local
 
+然后重启服务器检查上面这4条规则是否开机启动了
+
 # Debian10+
 
 1，第一步 debian无需更换内核，然后将ipv4上传到home目录里
@@ -46,28 +48,16 @@ chmod +x /etc/rc.d/rc.local
 
 4，把下面4条规则加入到开机启动
 
-cat <<EOF >/etc/rc.local
-#!/bin/sh -e
-#
-# rc.local
-#
-# This script is executed at the end of each multiuser runlevel.
-# Make sure that the script will "exit 0" on success or any other
-# value on error.
-#
-# In order to enable or disable this script just change the execution
-# bits.
-#
-# By default this script does nothing.
+创建一个/etc/rc.local文件，把下面4句写到rc.local文件里
+
 ufw disable
 ipset create dafeiyun hash:ip timeout 3600 maxelem 1000000
 iptables -I INPUT -m set --match-set dafeiyun src -j DROP
 exit 0
-EOF
 
 5，然后赋予权限chmod +x /etc/rc.local   接着启动rc-local服务systemctl enable --now rc-local
 
-其他规则都和视频里centos7.X一样
+然后重启服务器检查上面这4条规则是否开机启动了
 
 ==========================================================================================================================
 
