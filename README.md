@@ -12,8 +12,8 @@ ipv4是驱动防火墙白名单文件
 
 nginx是编译好魔改nginx二进制文件
 
-Centos7.X
-==========================================================================================================================
+# Centos7.X
+
 1，第一步 先更换系统内核，安装我们提供的3个内核，然后将ipv4上传到home目录里
 
 2，安装必要的依赖项yum install -y net-tools和yum -y install iptables和yum -y install ipset
@@ -36,11 +36,9 @@ echo "insmod /home/dafeiyun_fw.ko">>/etc/rc.d/rc.local
 
 chmod +x /etc/rc.d/rc.local
 
-Debian10+
-==========================================================================================================================
-Debian 11+支持
+# Debian10+
 
-1，第一步 debian11无需更换内核，然后将ipv4上传到home目录里
+1，第一步 debian无需更换内核，然后将ipv4上传到home目录里
 
 2，安装必要的依赖项apt-get install iptables和apt-get install ipset和apt-get install net-tools
 
