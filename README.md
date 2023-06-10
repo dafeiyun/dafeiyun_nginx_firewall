@@ -7,7 +7,9 @@
 
 实测物理服务器E3-1230V2  100M宽带可以实现无视CC效果！
 
-Telegram群:@dfy888   网站dafeiyun.com    作者Telegram:@dafeiyun 
+* Telegram群:@dfy888 https://t.me/dafeiyun  
+* 作者Telegram:@dafeiyun https://t.me/dafeiyun
+* 网站dafeiyun.com https://dafeiyun.com
 
 支持操作系统Centos7.X和Debian11+
 
