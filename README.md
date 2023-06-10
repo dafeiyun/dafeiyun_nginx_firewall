@@ -64,13 +64,13 @@ dafeiyun_waf_auto_model 5 300 1 600;  这是自动CC防御js验证模式 5代表
 
 dafeiyun_waf_only_model 1;   这是永久CC防御js验证模式 ，1是自动跳转js验证，2是点击验证，3是验证码验证
 
-dafeiyun_waf_only_get on;  这里on是访问js验证只允许get访问  其他访问直接iptables封ip
+dafeiyun_waf_only_get on;  这里on是访问js验证只允许get访问  其他访问直接驱动防火墙拉黑封ip
 
-dafeiyun_waf_max 5;  这里5是代表如果访问5次还解不开js验证 直接iptables封ip
+dafeiyun_waf_max 5;  这里5是代表如果访问5次还解不开js验证 直接驱动防火墙拉黑封ip
 
 dafeiyun_waf_block_444 3600;  驱动防火墙拉黑ip的同时对攻击者ip返回444 3600秒
   
-dafeiyun_waf_concurrency 500; 这个500是代表除了白名单以外的ip，所有访问者(包括通过了js验证的)每分钟请求超过500就直接iptables封ip
+dafeiyun_waf_concurrency 500; 这个500是代表除了白名单以外的ip，所有访问者(包括通过了js验证的)每分钟请求超过500就直接驱动防火墙拉黑封ip
 
 自动CC防御js验证模式和永久CC防御js验证模式只能二选一
 
