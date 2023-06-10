@@ -38,7 +38,7 @@ chmod +x /etc/rc.d/rc.local
 
 2，然后将debian_3.0版本里所有文件上传到home目录里并给与root权限chmod +x /home/*
 
-3，进入宝塔目录/www/server/nginx/sbin/替换我们的魔改nginx二进制文件，并且把在nginx.conf配置文件中把nginx改为root启动 将ip白名单规则dafeiyun_waf_whitelist "/home/ipv4";插入nginx.conf配置文件中的http字段里面
+3，进入宝塔目录/www/server/nginx/sbin/替换我们的魔改nginx二进制文件，并且把在nginx.conf配置文件中把nginx改为root启动 将ip白名单规则dafeiyun_waf_whitelist "/home/ipv4";和nginx特殊加成功能dafeiyun_nginx_patch on;插入nginx.conf配置文件中的http字段里面
 
 4，把下面4条规则加入到开机启动
 
