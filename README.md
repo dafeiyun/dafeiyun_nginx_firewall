@@ -81,16 +81,11 @@ dafeiyun_waf_concurrency 500; 这个500是代表除了白名单以外的ip，所
 # 白名单功能
 home目录里有个ipv4白名单文件，可以自行添加白名单到里面，默认白名单文件 包含了所有搜索引擎白名单ip和cf节点白名单ip 以实现cc防御不会影响网站收录和蜘蛛抓取
 
-这是UA头白名单配置  ， dafeiyun_waf off;是一个常量 代表关闭cc防御意思 ，可以自己用正则去匹配
-location / {
-        if ($http_user_agent =~ "Hello,World") {
-            dafeiyun_waf off;
-        }
+dafeiyun_waf off;是一个常量 代表关闭cc防御意思 ，可以自己用正则去匹配
 
-这是网站根目录一个api的文件夹白名单 不开启js验证
-location = /api/ {
-        dafeiyun_waf off;
-    }
+这是UA头白名单配置 location / { if ($http_user_agent =~ "Hello,World") { dafeiyun_waf off; }
+
+这是网站根目录一个api的文件夹白名单 不开启js验证 location = /api/ { dafeiyun_waf off; }
 
 # 查询驱动防火墙拉黑ip名单
 
