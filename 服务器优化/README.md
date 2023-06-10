@@ -6,7 +6,7 @@ echo "* hard nofile 1000000" >> /etc/security/limits.conf
 
 echo "ulimit -SHn 1000000">>/etc/profile
 
-> /etc/sysctl.conf   #####先清空原有sysctl.conf规则
+先清空原有sysctl.conf规则 > /etc/sysctl.conf
 
 echo "fs.file-max = 1000000" >> /etc/sysctl.conf
 
