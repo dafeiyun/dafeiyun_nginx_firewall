@@ -1,0 +1,158 @@
+大飞云nginx驱动防火墙3.0版本安装教程  2023年6月9日更新
+介绍:大飞云nginx驱动防火墙 可以实现对每个nginx上网站实现第七层CC防御(https和http) 
+并且由我们魔改版的nginx可以自动检测cc攻击并且可以调用我们的驱动防火墙从网卡接口处丢弃流量，让cc攻击带来的宽带和cpu消耗变成0
+由我们魔改nginx核心源代码重组版的nginx有许多普通nginx没有的特殊功能加成:比如可以防御慢速web端口攻击，防御ssl握手攻击，防御异型web包攻击，防御400异型包攻击等
+实测物理服务器E3-1230V2  100M宽带可以实现无视CC效果！
+=========================================================
+Telegram群:@dfy888   网站dafeiyun.com    作者Telegram:@dafeiyun     是免费的不收费
+=========================================================
+Github更新地址 https://github.com/dafeiyun/dafeiyun_nginx_firewall
+=========================================================
+目前支持centos7.X和Debian11系统
+现在配置驱动防火墙
+
+dafeiyun_driver_loading是驱动防火墙驱动加载软件
+dafeiyun_fw是驱动防火墙主软件
+dafeiyun_fw_api是驱动防火墙接口文件
+api.sh是启动驱动防火墙接口文件
+这4个文件必须放在home目录里面不可改名字，把这4个文件上传到home目录，给root权限
+面板地址: http://192.168.175.131:8888/66d6ecce
+username: pauoqnx2
+password: 6b429c87
+==================================================
+第一步先更换内核  ，先上传内核文件和所有所需的文件到home目录 ，这些文件全部要给root权限
+
+需要关闭linuxse
+setenforce 0
+sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
+查询内核rpm -qa | grep kernel  卸载内核 rpm --nodeps -e 安装我们提供的内核yum install -y 设置新内核启动grub2-set-default 0 ，直接reboot重启服务器
+
+yum install -y kernel-ml-5.19.12-1.el7.elrepo.x86_64.rpm kernel-ml-devel-5.19.12-1.el7.elrepo.x86_64.rpm kernel-ml-headers-5.19.12-1.el7.elrepo.x86_64.rpm
+
+更换内核是必须的 不然驱动防火墙不支持 重要的事情说三遍 ，现在是5.19内核启动的 是正确的
+
+yum install -y kernel-ml-5.19.12-1.el7.elrepo.x86_64.rpm kernel-ml-devel-5.19.12-1.el7.elrepo.x86_64.rpm kernel-ml-headers-5.19.12-1.el7.elrepo.x86_64.rpm
+
+==================================================
+然后优化服务器TCP连接
+echo "* soft nofile 1000000" >> /etc/security/limits.conf
+echo "* hard nofile 1000000" >> /etc/security/limits.conf
+echo "ulimit -SHn 1000000">>/etc/profile
+> /etc/sysctl.conf  先清空原有sysctl.conf规则
+echo "fs.file-max = 1000000" >> /etc/sysctl.conf
+echo "net.ipv4.ip_local_port_range = 1024 65535" >> /etc/sysctl.conf
+echo "net.ipv4.tcp_max_tw_buckets = 2000">>/etc/sysctl.conf
+echo "net.ipv4.tcp_keepalive_time = 300" >> /etc/sysctl.conf
+echo "net.ipv4.tcp_fin_timeout = 30">>/etc/sysctl.conf
+sysctl -p 重启服务器
+==================================================
+先手动测试下服务器网卡是否支持加载驱动，
+
+mount bpffs /sys/fs/bpf -t bpf -o nosuid,nodev,noexec,relatime,mode=700
+驱动防火墙网卡接口驱动配置，找到服务器的公网up网卡名字 ，我这里是ens33
+提示Success: XDP prog attached on device:ens33(ifindex:2)代表驱动已经加载到服务器的网卡上面了， 同时服务器网卡接口处也会出现xdp字样才是成功了
+
+
+echo "bpffs  /sys/fs/bpf  bpf  nosuid,nodev,noexec,relatime,mode=700  0 0">>/etc/fstab    这个是把驱动挂载到开机自动加载
+
+echo "/home/dafeiyun_driver_loading -d ens33">>/etc/rc.d/rc.local   这个是把驱动挂载到开机自动加载
+echo "/home/api.sh">>/etc/rc.d/rc.local  这个是一个计时器 可以每小时自动清理驱动防火墙拉黑的ip ，也添加到开机启动 
+
+chmod +x /etc/rc.d/rc.local   ，到此驱动防火墙环境就算安装完成了 环境安装完成必须重启服务器 ，重启服务器一下检查下驱动是否开机自动加载了，没问题了，这里显示xdp
+==================================================
+接下来配置魔改版nginx 先把nginx编译安装一次 ，有点慢 
+
+CC防御规则介绍，对服务器上网站开启cc防御方法，先创建一个网站，我这里创建好了，就不创建了 
+
+dafeiyun_nginx_patch on; 这是nginx特殊加成功能 防御慢速web端口攻击，防御ssl握手攻击，防御异型web包攻击，防御400异型包攻击等开关
+dafeiyun_waf_whitelist "/home/ipv4"; 这是全局白名单文件 包含了所有搜索引擎白名单ip和cf节点白名单ip 以实现cc防御不会影响网站收录和蜘蛛抓取
+
+这两句代码规则放到nginx配置文件里 ，必须放到我视频里同样位置 
+
+找到/www/server/nginx/sbin 替换我们的驱动防火墙nginx
+
+nginx必须改为root启动 
+
+dafeiyun_waf on; 防火墙开关on是开，off是关闭
+
+dafeiyun_waf_auto_model 5 300 1 600;  这是自动CC防御js验证模式 5代表每秒50X状态码出现的次数，300代表网站每秒访问300，1是自动跳转js验证，2是点击验证，3是验证码验证，600是600秒。合起来意思是网站每秒50X状态超过5次或者网站每秒访问超过300次自动开启cc防御模式1的600秒钟，
+
+dafeiyun_waf_only_model 1;   这是永久CC防御js验证模式 ，1是自动跳转js验证，2是点击验证，3是验证码验证
+
+dafeiyun_waf_only_get on;   这是js验证只允许以get访问 其他访问直接驱动防火墙拉黑ip
+
+dafeiyun_waf_max 5;  这是js验证尝试最大次数 超过这个次数没有通过js验证直接驱动防火墙拉黑ip
+
+dafeiyun_waf_block_444 3600;  驱动防火墙拉黑ip的同时对攻击者ip返回444 3600秒
+
+dafeiyun_waf_concurrency 500; 除了白名单以外ip 其他所有ip每分钟访问超过500次以上直接驱动防火墙拉黑ip
+
+cc防御配置自己看文字 ，说的很清楚了·，
+
+dafeiyun_waf on;
+#dafeiyun_waf_auto_model 5 300 1 600; 
+dafeiyun_waf_only_model 1;  
+dafeiyun_waf_only_get on; 
+dafeiyun_waf_max 5; 
+dafeiyun_waf_block_444 3600;
+dafeiyun_waf_concurrency 500;
+
+自动CC防御js验证模式和永久CC防御js验证模式只能二选一，我这里把自动的注释掉，开启强制的， 然后创建网站，单个网站配置cc防御
+
+每次修改完都需要重启nginx生效 ，注意:重启nginx让规则生效不能直接重启nginx，需要先停止nginx 然后在启动nginx，因为直接重启nginx可能会失败 因为nginx写到内存中的数据来不及释放，这里宝塔有个bug就是有时候nginx会不能停止和重启 ，需要执行pkill nginx命令强制杀掉nginx进程然后在启动就ok了
+
+1是自动跳转js验证 网站后面有尾巴 ，2是点击验证，3是验证码验证
+
+下面介绍如何开启触发模式的自动cc防御js验证
+
+dafeiyun_waf_auto_model 5 300 3 600;
+
+这是自动CC防御js验证模式 5代表每秒50X状态码比如502，503啥的都算出现的次数，300代表网站每秒访问300，1是自动跳转js验证，2是点击验证，3是验证码验证，600是600秒。合起来意思是网站每秒50X状态超过5次或者网站每秒访问超过300次自动开启cc防御模式3验证码的600秒钟，
+
+自动CC防御js验证模式和永久CC防御js验证模式只能二选一，需要注释掉一个
+
+现在测试网站每秒访问超过10次自动开启cc防御3验证码 ，把300改成10  ，这个可以根据自己网站流量大小合理设置，然后停止nginx 在开启让规则更改的生效，网站还没有达到每秒访问超过10次  直接按F5不停，是生效的了，出现了验证码验证，下面设置自动cc防御模式验证码得
+
+================================================== 
+白名单功能
+home目录里有个ipv4白名单文件，可以自行添加白名单到里面，默认白名单文件 包含了所有搜索引擎白名单ip和cf节点白名单ip 以实现cc防御不会影响网站收录和蜘蛛抓取
+
+这是UA头白名单配置  ， dafeiyun_waf off;是一个常量 代表关闭cc防御意思 ，可以自己用正则去匹配
+location / {
+        if ($http_user_agent =~ "Hello,World") {
+            dafeiyun_waf off;
+        }
+
+这是网站根目录一个api的文件夹白名单 不开启js验证
+location = /api/ {
+        dafeiyun_waf off;
+    }
+这样就ok了
+================================================== 
+还有一个就是服务器别开http2 对cc防御有影响 ，关闭http2方法如下，把listen 443 ssl http2;里的http2删除 ，然后保存，然后停止nginx 在开启就可以了，只有配置了ssl证书和开启了https的才有，
+server
+{
+  listen 80;
+  listen 443 ssl;
+  ..
+  ..
+}
+
+================================================== 
+查看驱动防火墙拉黑IP名单命令是 /home/dafeiyun_fw -l，我这里驱动防火墙没有拉黑ip 所以
+是空的  ，默认驱动防火墙拉黑ip是拉黑60分钟自动释放 ，，
+
+由我们魔改nginx核心源代码重组版的nginx有许多普通nginx没有的特殊功能加成:比如可以防御慢速web端口攻击，防御ssl握手攻击，防御异型web包攻击，防御400异型包攻击等
+
+这些都是真实有效的，现在模拟测试一下慢速web端口攻击，模拟慢速web端口攻击发包
+现在已经被驱动防火墙拉黑了  直接拉黑ip
+
+Telegram群:@dfy888   网站dafeiyun.com    作者Telegram:@dafeiyun
+有什么不懂的可以来Telegram群:@dfy888
+
+Github更新地址 https://github.com/dafeiyun/dafeiyun_nginx_firewall
+承诺永久免费更新 
+
+
+
+
