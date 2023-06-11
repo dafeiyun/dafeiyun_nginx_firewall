@@ -74,7 +74,7 @@ dafeiyun_waf_concurrency 500; 这个500是代表除了白名单以外的ip，所
 
 自动CC防御js验证模式和永久CC防御js验证模式只能二选一
 
-把这5条规则添加到nginx.conf的http字段里就是全局开启cc防御，也可以单独针对某个网站开启cc防御 只需添加到单个网站的配置文件里
+把这6条规则添加到nginx.conf的http字段里就是全局开启cc防御，也可以单独针对某个网站开启cc防御 只需添加到单个网站的配置文件里
 
 每次修改完都需要重启nginx生效 ，注意:重启nginx让规则生效不能直接重启nginx，需要先停止nginx 然后在启动nginx，因为直接重启nginx可能会失败 因为nginx写到内存中的数据来不及释放，这里宝塔有个bug就是有时候nginx会不能停止和重启 ，需要执行pkill nginx命令强制杀掉nginx进程然后在启动就ok了
 
