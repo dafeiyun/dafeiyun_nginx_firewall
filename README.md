@@ -11,7 +11,7 @@
 * 作者Telegram:@usdafeiyun https://t.me/usdafeiyun
 * 网站dafeiyun.com https://dafeiyun.com
 
-* 本公司专业做海外高防服务器，一手资源，可防国内方向量和国际量，小包大包全防。无视一切DDOS/CC攻击多年防护经验，欢迎合作及咨询。联系Telegram:@dafeiyun https://t.me/dafeiyun
+* 本公司专业做海外高防服务器，一手资源，可防国内方向量和国际量，小包大包全防。无视一切DDOS/CC攻击多年防护经验，欢迎合作及咨询。联系Telegram:@usdafeiyun https://t.me/usdafeiyun
 
 
 支持操作系统Centos7.X和Debian11+
