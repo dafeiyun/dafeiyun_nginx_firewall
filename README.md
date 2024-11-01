@@ -8,7 +8,7 @@
 实测物理服务器E3-1230V2  100M宽带可以实现无视CC效果！
 
   
-* 作者Telegram:@dafeiyun https://t.me/dafeiyun
+* 作者Telegram:@usdafeiyun https://t.me/usdafeiyun
 * 网站dafeiyun.com https://dafeiyun.com
 
 * 本公司专业做海外高防服务器，一手资源，可防国内方向量和国际量，小包大包全防。无视一切DDOS/CC攻击多年防护经验，欢迎合作及咨询。联系Telegram:@dafeiyun https://t.me/dafeiyun
@@ -98,4 +98,4 @@ dafeiyun_waf off;是一个常量 代表关闭cc防御意思 ，可以自己用�
 
 默认驱动防火墙拉黑ip是拉黑60分钟自动释放
 
-还有很多规则 ，比如指定目录不开启cc防御 不拦截api等支付接口方法 一时间讲不完那，可以来Telegram群:@dfy888来交流 
+还有很多规则 ，比如指定目录不开启cc防御 不拦截api等支付接口方法 一时间讲不完那，可联系Telegram:@usdafeiyun
