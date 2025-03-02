@@ -4,7 +4,7 @@
 由我们魔改nginx核心源代码重组版的nginx有许多普通nginx没有的特殊功能加成:比如可以防御慢速web端口攻击，防御ssl握手攻击，防御异型web包攻击，防御400异型包攻击等
 实测物理服务器E3-1230V2  100M宽带可以实现无视CC效果！
 =========================================================
-Telegram群:@dfy888   网站dafeiyun.com    作者Telegram:@dafeiyun     是免费的不收费
+网站dafeiyun.com    作者Telegram:@usdafeiyun     是免费的不收费
 =========================================================
 Github更新地址 https://github.com/dafeiyun/dafeiyun_nginx_firewall
 =========================================================
@@ -145,11 +145,10 @@ server
 这些都是真实有效的，现在模拟测试一下慢速web端口攻击，模拟慢速web端口攻击发包
 现在已经被驱动防火墙拉黑了  直接拉黑ip
 
-Telegram群:@dfy888   网站dafeiyun.com    作者Telegram:@dafeiyun
-有什么不懂的可以来Telegram群:@dfy888
+网站dafeiyun.com    作者Telegram:@usdafeiyun
 
 Github更新地址 https://github.com/dafeiyun/dafeiyun_nginx_firewall
-承诺永久免费更新 
+ 
 
 
 
