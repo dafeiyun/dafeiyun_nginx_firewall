@@ -1,4 +1,4 @@
-# dafeiyun_nginx_firewall 3.0版本(2023-6-11更新)
+# dafeiyun_nginx_firewall 3.0版本(免费版本已停止维护和更新)
 
 说明:大飞云nginx驱动防火墙 可以实现对每个nginx上网站实现第七层CC防御(https和http) 
 并且由我们魔改版的nginx可以自动检测cc攻击并且可以调用我们的驱动防火墙从网卡接口处拉黑IP丢弃流量，让cc攻击带来的宽带和cpu消耗变成0 ，给系统带来0损耗不消耗任何宽带和CPU.
@@ -7,7 +7,7 @@
 
 实测物理服务器E3-1230V2  100M宽带可以实现无视CC效果！
 
-  
+* 免费版本已停止维护和更新，商业版本可以联系作者
 * 作者Telegram:@usdafeiyun https://t.me/usdafeiyun
 * 网站dafeiyun.com https://dafeiyun.com
 
